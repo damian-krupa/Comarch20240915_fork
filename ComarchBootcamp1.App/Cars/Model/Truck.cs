@@ -2,7 +2,7 @@
 
 internal class Truck : Vehicle
 {
-    public override void Refuel(int count)
+    public void Refuel(int count)
     {
         throw new NotImplementedException();
     }

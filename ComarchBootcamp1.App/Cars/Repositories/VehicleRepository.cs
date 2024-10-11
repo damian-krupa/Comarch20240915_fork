@@ -1,9 +1,5 @@
 ﻿using ComarchBootcamp1.App.Cars.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace ComarchBootcamp1.App.Cars.Repositories;
 
@@ -16,7 +12,12 @@ internal class VehicleRepository
 
     public List<Vehicle> GetAll()
     {
-         return data;
+        if (File.Exists("vehicles.json"))
+        {
+            string jsonString = File.ReadAllText("vehicles.json");
+            data = JsonSerializer.Deserialize<List<Vehicle>>(jsonString)!;
+        }
+        return data;
     }
 
     public Vehicle GetVehicle(int id)
@@ -30,7 +31,11 @@ internal class VehicleRepository
         if (data.Any())
             id = data.OrderByDescending(x => x.Id).First().Id;
         vehicle.Id = id + 1;
+        vehicle.Type = vehicle.GetType().Name; // Set the vehicle type
         data.Add(vehicle);
+        
+        string jsonString = JsonSerializer.Serialize(data);
+        File.WriteAllText("vehicles.json", jsonString);
     }
 
     public void Remove(int id)

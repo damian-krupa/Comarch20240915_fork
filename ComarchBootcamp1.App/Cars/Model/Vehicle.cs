@@ -1,6 +1,6 @@
 ﻿namespace ComarchBootcamp1.App.Cars.Model;
 
-internal abstract class Vehicle
+public class Vehicle
 {
     public int Id { get; set; }
 
@@ -11,8 +11,8 @@ internal abstract class Vehicle
     public string GasType { get; set; }
 
     public int Capacity { get; set; }
-
-    public abstract void Refuel(int count);
+    
+    public string Type { get; set; }
 
     public virtual void Borrow(string Borrower)
     {
