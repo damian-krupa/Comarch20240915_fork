@@ -11,18 +11,18 @@ public class Program
         {
             ShowMenu();
             Console.Write("Wybierz opcję: ");
-            bool czyOk = int.TryParse(Console.ReadLine(), out int choise);
-            if (czyOk)
+            var isOk = int.TryParse(Console.ReadLine(), out var choice);
+            if (isOk)
             {
-                if (choise == 0) Environment.Exit(0);
+                if (choice == 0) Environment.Exit(0);
 
                 Console.Clear();
                 int x, y;
 
-                Calculator calc = new Calculator();
-                float result = 0;
+                var calc = new Calculator();
+                float result;
 
-                switch (choise)
+                switch (choice)
                 {
                     case 1:
                         GetXY(out x, out y);
@@ -61,18 +61,18 @@ public class Program
                         Console.WriteLine($"Reszta z dzielenia {x} oraz {y} to {result:f}");
                         break;
                     case 6:
-                        CarManager cm = new CarManager();
-                        cm.Start();
+                        var carManager = new CarManager();
+                        carManager.Start();
                         break;
                     case 7:
                         Console.WriteLine("Wprowadź wartość do zapisania do pliku:");
-                        string content = Console.ReadLine();
+                        var content = Console.ReadLine();
                         File.WriteAllText("file.txt", content);
                         Console.WriteLine("Zapisano.");
                         break;
                     case 8:
                         Console.WriteLine("Zawartość pliku file.txt");
-                        string text = File.ReadAllText("file.txt");
+                        var text = File.ReadAllText("file.txt");
                         Console.WriteLine(text);
                         break;
                     default:

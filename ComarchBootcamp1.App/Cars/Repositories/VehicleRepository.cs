@@ -12,31 +12,45 @@ internal class VehicleRepository
 
     public List<Vehicle> GetAll()
     {
-        if (File.Exists("vehicles.json"))
-        {
-            string jsonString = File.ReadAllText("vehicles.json");
-            _vehicles = JsonSerializer.Deserialize<List<Vehicle>>(jsonString)!;
-        }
+        if (!File.Exists("vehicles.json")) return _vehicles;
+        var jsonString = File.ReadAllText("vehicles.json");
+        _vehicles = JsonSerializer.Deserialize<List<Vehicle>>(jsonString)!;
 
         return _vehicles;
     }
 
-    private Vehicle? GetVehicle(int id)
+    public Vehicle? GetVehicle(int id)
     {
         return _vehicles.FirstOrDefault(vehicle => vehicle.Id == id);
     }
 
     public void Add(Vehicle vehicle)
     {
-        int id = 0;
+        var id = 0;
         if (_vehicles.Count > 0)
             id = _vehicles.OrderByDescending(x => x.Id).First().Id;
         vehicle.Id = id + 1;
         vehicle.Type = vehicle.GetType().Name; // Set the vehicle type
         _vehicles.Add(vehicle);
 
-        string jsonString = JsonSerializer.Serialize(_vehicles);
+        var jsonString = JsonSerializer.Serialize(_vehicles);
         File.WriteAllText("vehicles.json", jsonString);
+    }
+    
+    public void Modify(int id, Vehicle updatedVehicle)
+    {
+        var vehicle = GetVehicle(id);
+        if (vehicle == null) return;
+        
+        vehicle.Maker = updatedVehicle.Maker;
+        vehicle.Model = updatedVehicle.Model;
+        vehicle.GasType = updatedVehicle.GasType;
+        vehicle.Capacity = updatedVehicle.Capacity;
+        vehicle.Type = updatedVehicle.Type;
+
+        var jsonString = JsonSerializer.Serialize(_vehicles);
+        File.WriteAllText("vehicles.json", jsonString);
+        Console.WriteLine("Zaktualizowano pojazd o id: " + id);
     }
 
     public void Remove(int id)
@@ -46,7 +60,7 @@ internal class VehicleRepository
         {
             _vehicles.Remove(vehicle);
 
-            string jsonString = JsonSerializer.Serialize(_vehicles);
+            var jsonString = JsonSerializer.Serialize(_vehicles);
             File.WriteAllText("vehicles.json", jsonString);
             Console.WriteLine("Usunięto pojazd o id: " + id);
         }

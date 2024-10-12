@@ -25,9 +25,12 @@ internal class CarManager
                         AddNewCar();
                         break;
                     case 3:
-                        DeleteCar();
+                        ModifyCar();
                         break;
                     case 4:
+                        DeleteCar();
+                        break;
+                    case 5:
                         BorrowCar();
                         break;
                 }
@@ -37,7 +40,7 @@ internal class CarManager
         Console.WriteLine("Koniec programu.");
     }
 
-    private void DeleteCar()
+    private static void DeleteCar()
     {
         Console.Write("Podaj id: ");
         if (int.TryParse(Console.ReadLine(), out var id))
@@ -53,7 +56,7 @@ internal class CarManager
         Console.ReadKey();
     }
 
-    private void AddNewCar()
+    private static void AddNewCar()
     {
         Console.WriteLine("Tworzenie nowego pojazdu.");
         Console.WriteLine("Wybierz typ auta: ");
@@ -98,8 +101,44 @@ internal class CarManager
         var repository = new VehicleRepository();
         repository.Add(vehicle);
     }
+    
+    private static void ModifyCar()
+    {
+        Console.Write("Podaj id pojazdu do modyfikacji: ");
+        if (int.TryParse(Console.ReadLine(), out var id))
+        {
+            var repository = new VehicleRepository();
+            var vehicle = repository.GetVehicle(id);
+            if (vehicle != null)
+            {
+                Console.Write("Podaj nową markę: ");
+                vehicle.Maker = Console.ReadLine() ?? "";
 
-    private void ShowCars()
+                Console.Write("Podaj nowy model: ");
+                vehicle.Model = Console.ReadLine() ?? "";
+
+                Console.Write("Podaj nowy rodzaj paliwa: ");
+                vehicle.GasType = Console.ReadLine() ?? "";
+
+                Console.Write("Podaj nową pojemność silnika: ");
+                vehicle.Capacity = int.Parse(Console.ReadLine() ?? "0");
+
+                repository.Modify(id, vehicle);
+            }
+            else
+            {
+                Console.WriteLine("Nie znaleziono pojazdu o podanym id.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Nieprawidłowy format id.");
+        }
+
+        Console.ReadKey();
+    }
+
+    private static void ShowCars()
     {
         var repository = new VehicleRepository();
         var carList = repository.GetAll();
@@ -110,7 +149,7 @@ internal class CarManager
         Console.ReadKey();
     }
 
-    private void BorrowCar()
+    private static void BorrowCar()
     {
         Vehicle vehicle = new Car();
         vehicle.Borrow("");
@@ -119,14 +158,15 @@ internal class CarManager
         car.Borrow("");
     }
 
-    private void ShowMenu()
+    private static void ShowMenu()
     {
         Console.Clear();
         Console.WriteLine("CAR MANAGER 1.0");
         Console.WriteLine("  1. Lista aut");
         Console.WriteLine("  2. Dodaj auto");
-        Console.WriteLine("  3. Usuń auto");
-        Console.WriteLine("  4. Wypożycz");
+        Console.WriteLine("  3. Edytuj auto");
+        Console.WriteLine("  4. Usuń auto");
+        Console.WriteLine("  5. Wypożycz");
         Console.WriteLine("  0. Zakończ");
     }
 }
