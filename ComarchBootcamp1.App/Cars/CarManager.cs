@@ -101,7 +101,7 @@ internal class CarManager
         var repository = new VehicleRepository();
         repository.Add(vehicle);
     }
-    
+
     private static void ModifyCar()
     {
         Console.Write("Podaj id pojazdu do modyfikacji: ");

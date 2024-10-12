@@ -36,12 +36,12 @@ internal class VehicleRepository
         var jsonString = JsonSerializer.Serialize(_vehicles);
         File.WriteAllText("vehicles.json", jsonString);
     }
-    
+
     public void Modify(int id, Vehicle updatedVehicle)
     {
         var vehicle = GetVehicle(id);
         if (vehicle == null) return;
-        
+
         vehicle.Maker = updatedVehicle.Maker;
         vehicle.Model = updatedVehicle.Model;
         vehicle.GasType = updatedVehicle.GasType;
