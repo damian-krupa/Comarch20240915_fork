@@ -1,11 +1,6 @@
 ﻿using ComarchBootcamp1.App.Cars.Model;
 using ComarchBootcamp1.App.Cars.Repositories;
 using ConsoleTables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ComarchBootcamp1.App.Cars;
 
@@ -13,15 +8,15 @@ internal class CarManager
 {
     public void Start()
     {
-        int choise;
+        int choice;
         do
         {
             ShowMenu();
 
             Console.Write("Wybierz pozycję: ");
-            if (int.TryParse(Console.ReadLine(), out choise))
+            if (int.TryParse(Console.ReadLine(), out choice))
             {
-                switch (choise)
+                switch (choice)
                 {
                     case 1:
                         ShowCars();
@@ -35,17 +30,27 @@ internal class CarManager
                     case 4:
                         BorrowCar();
                         break;
-                    default:
-                        break;
                 }
             }
-        } while (choise != 0);
+        } while (choice != 0);
+
         Console.WriteLine("Koniec programu.");
     }
 
     private void DeleteCar()
     {
-        throw new NotImplementedException();
+        Console.Write("Podaj id: ");
+        if (int.TryParse(Console.ReadLine(), out var id))
+        {
+            var repository = new VehicleRepository();
+            repository.Remove(id);
+        }
+        else
+        {
+            Console.WriteLine("Nieprawidłowy format id.");
+        }
+
+        Console.ReadKey();
     }
 
     private void AddNewCar()
@@ -55,7 +60,7 @@ internal class CarManager
         Console.WriteLine(" 1. Car");
         Console.WriteLine(" 2. Bus");
         Console.WriteLine(" 3. Truck");
-        int carTypeUser = int.Parse(Console.ReadLine());
+        int carTypeUser = int.Parse(Console.ReadLine() ?? "1");
         CarTypes carType = (CarTypes)carTypeUser;
 
         Vehicle? vehicle = null;
@@ -79,16 +84,16 @@ internal class CarManager
         if (vehicle == null) return;
 
         Console.Write("Podaj markę: ");
-        vehicle.Maker = Console.ReadLine();
+        vehicle.Maker = Console.ReadLine() ?? "";
 
         Console.Write("Podaj model: ");
-        vehicle.Model = Console.ReadLine();
+        vehicle.Model = Console.ReadLine() ?? "";
 
         Console.Write("Podaj rodzaj paliwa: ");
-        vehicle.GasType = Console.ReadLine();
+        vehicle.GasType = Console.ReadLine() ?? "";
 
         Console.Write("Podaj pojemność silnika: ");
-        vehicle.Capacity = int.Parse(Console.ReadLine());
+        vehicle.Capacity = int.Parse(Console.ReadLine() ?? "0");
 
         var repository = new VehicleRepository();
         repository.Add(vehicle);
@@ -101,7 +106,7 @@ internal class CarManager
 
         ConsoleTable
             .From(carList)
-            .Write(Format.Default);
+            .Write();
         Console.ReadKey();
     }
 
