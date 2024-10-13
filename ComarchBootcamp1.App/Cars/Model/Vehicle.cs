@@ -13,9 +13,8 @@ public class Vehicle
     public int Capacity { get; set; }
 
     public string Type { get; set; }
-
-    public virtual void Borrow(string Borrower)
-    {
-        Console.WriteLine("Metoda Borrow w klasie Vehicle");
-    }
+    
+    public bool IsRented { get; set; }
+    
+    public string? Renter { get; set; }
 }

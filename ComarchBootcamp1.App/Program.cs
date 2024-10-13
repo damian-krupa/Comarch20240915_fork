@@ -50,10 +50,6 @@ public class Program
                         {
                             ShowError(ex.Message);
                         }
-                        finally
-                        {
-                            //
-                        }
                         break;
                     case 5:
                         GetXY(out x, out y);
@@ -116,7 +112,7 @@ public class Program
         Console.WriteLine("0. Wyjście z programu");
     }
 
-    internal static void ShowError(string msg)
+    private static void ShowError(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine(msg);

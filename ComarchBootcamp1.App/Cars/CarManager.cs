@@ -31,7 +31,10 @@ internal class CarManager
                         DeleteCar();
                         break;
                     case 5:
-                        BorrowCar();
+                        RentCar();
+                        break;
+                    case 6:
+                        ReturnRentedCar();
                         break;
                 }
             }
@@ -149,13 +152,17 @@ internal class CarManager
         Console.ReadKey();
     }
 
-    private static void BorrowCar()
+    private static void RentCar()
     {
-        Vehicle vehicle = new Car();
-        vehicle.Borrow("");
-
-        Car car = new Car();
-        car.Borrow("");
+        var repository = new VehicleRepository();
+        repository.Rent();
+        Console.ReadKey();
+    }
+    private void ReturnRentedCar()
+    {
+        var repository = new VehicleRepository();
+        repository.ReturnRented();
+        Console.ReadKey();
     }
 
     private static void ShowMenu()
@@ -166,7 +173,8 @@ internal class CarManager
         Console.WriteLine("  2. Dodaj auto");
         Console.WriteLine("  3. Edytuj auto");
         Console.WriteLine("  4. Usuń auto");
-        Console.WriteLine("  5. Wypożycz");
+        Console.WriteLine("  5. Wypożycz auto");
+        Console.WriteLine("  6. Oddaj auto");
         Console.WriteLine("  0. Zakończ");
     }
 }

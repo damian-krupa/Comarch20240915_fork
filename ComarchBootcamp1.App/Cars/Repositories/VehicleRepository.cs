@@ -69,4 +69,75 @@ internal class VehicleRepository
             Console.WriteLine("Nie znaleziono pojazdu o podanym id.");
         }
     }
+    
+    public void Rent()
+    {
+        Console.Write("Podaj id pojazdu do wypożyczenia: ");
+        // TODO: ID validation could be extracted to a method
+        var isCorrectIdFormat = int.TryParse(Console.ReadLine(), out var id);
+        if (!isCorrectIdFormat)
+        {
+            Console.WriteLine("Nieprawidłowy format id.");
+            Console.ReadKey();
+            return;
+        }
+        var vehicle = GetVehicle(id);
+        if (vehicle != null)
+        {
+            if (vehicle.IsRented)
+            {
+                Console.WriteLine("Pojazd o podanym id jest już wypożyczony.");
+                return;
+            }
+            Console.Write("Podaj swoje imię i nazwisko: ");
+            var renter = Console.ReadLine();
+            if (string.IsNullOrEmpty(renter))
+            {
+                Console.WriteLine("Nieprawidłowe imię i nazwisko.");
+                Console.ReadKey();
+                return;
+            }
+            vehicle.IsRented = true;
+            vehicle.Renter = renter;
+
+            var jsonString = JsonSerializer.Serialize(_vehicles);
+            File.WriteAllText("vehicles.json", jsonString);
+            Console.WriteLine("Wypożyczono pojazd o id: " + id);
+        }
+        else
+        {
+            Console.WriteLine("Nie znaleziono pojazdu o podanym id.");
+        }
+    }
+    
+    public void ReturnRented()
+    {
+        Console.Write("Podaj id pojazdu do oddania: ");
+        var isCorrectIdFormat = int.TryParse(Console.ReadLine(), out var id);
+        if (!isCorrectIdFormat)
+        {
+            Console.WriteLine("Nieprawidłowy format id.");
+            Console.ReadKey();
+            return;
+        }
+        var vehicle = GetVehicle(id);
+        if (vehicle != null)
+        {
+            if (!vehicle.IsRented)
+            {
+                Console.WriteLine("Pojazd o podanym id nie jest wypożyczony.");
+                return;
+            }
+            vehicle.IsRented = false;
+            vehicle.Renter = null;
+
+            var jsonString = JsonSerializer.Serialize(_vehicles);
+            File.WriteAllText("vehicles.json", jsonString);
+            Console.WriteLine("Zwrócono pojazd o id: " + id);
+        }
+        else
+        {
+            Console.WriteLine("Nie znaleziono pojazdu o podanym id.");
+        }
+    }
 }

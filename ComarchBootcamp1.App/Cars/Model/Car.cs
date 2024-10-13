@@ -6,9 +6,4 @@ internal class Car : Vehicle
     {
         throw new NotImplementedException();
     }
-
-    public override void Borrow(string Borrower)
-    {
-        Console.WriteLine("Metoda Borrow w klasie Car");
-    }
 }
